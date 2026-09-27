@@ -518,6 +518,7 @@
         <div class="nav-buttons">
             <button class="nav-btn active" id="btn-ps" onclick="switchTab('ps', this)">PS</button>
             <button class="nav-btn" id="btn-cmds" onclick="switchTab('cmds', this)">CMDs</button>
+            <button class="nav-btn" id="btn-others" onclick="switchTab('others', this)">Others</button>
         </div>
     </div>
 
@@ -800,6 +801,26 @@
             </div>
             <div class="note-bar">
                 <span class="note-text" data-en="Rapidly flashes CMD text colors to turn terminal into a party disco show." data-vi="Chớp nháy màu chữ CMD liên tục biến màn hình thành vũ trường ngập sắc màu.">Rapidly flashes CMD text colors to turn terminal into a party disco show.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB OTHERS -->
+    <div id="others" class="section">
+        <div class="card useful-card">
+            <div class="card-header-line">
+                <span class="card-title" data-en="Scratch Addon Settings Configuration" data-vi="Cấu Hình Scratch Addon Settings">Scratch Addon Settings Configuration</span>
+            </div>
+            <div class="code-wrapper">
+                <code>settin'.json</code>
+                <button class="copy-btn" onclick="copyCode(this)" data-en="Copy Name" data-vi="Sao chép tên">Copy Name</button>
+            </div>
+            <div class="note-bar">
+                <span class="note-text" data-en="Custom Scratch Addons configuration file. Download or view raw to copy contents." data-vi="File cấu hình Scratch Addons cá nhân. Tải về hoặc xem mã raw để copy trực tiếp.">Custom Scratch Addons configuration file. Download or view raw to copy contents.</span>
+                <div class="action-btns">
+                    <a href="settin'.json" target="_blank" class="link-btn" data-en="📄 Raw" data-vi="📄 Raw">📄 Raw</a>
+                    <a href="settin'.json" download="settin'.json" class="guide-btn" style="text-decoration:none;">💾 <span data-en="Download" data-vi="Tải về">Download</span></a>
+                </div>
             </div>
         </div>
     </div>
