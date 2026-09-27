@@ -19,8 +19,8 @@
             --badge-fun-bg: #fef3c7;
             --badge-fun-text: #b45309;
             --modal-overlay: rgba(15, 23, 42, 0.55);
-            /* Legacy Leaf Pattern Background URL */
-            --bg-pattern: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="%2315803d" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.12"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.4 19 2c1 2 2 4.12 1 9a7 7 0 0 1-9 9z"/><path d="M11 20v-8.4"/></svg>');
+            /* New Leaf Branch Pattern - Sylphiette Green */
+            --bg-pattern: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="%2315803d" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.15"><path d="M12 22C12 22 11.5 14 16 8C19 4 21 3 21 3C21 3 20 6 16 9C13 11 12 15 12 22Z"/><path d="M12 18C9 16 6 16 4 18C6 15 8 13 12 14"/><path d="M13 13C10 10 7 10 4 11C7 9 9 7 13 9"/><path d="M15 8C13 5 11 5 8 6C11 4 13 3 15 5"/></svg>');
         }
 
         [data-theme="dark"] {
@@ -37,7 +37,8 @@
             --badge-fun-bg: #78350f;
             --badge-fun-text: #fef3c7;
             --modal-overlay: rgba(0, 0, 0, 0.75);
-            --bg-pattern: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="%2322c55e" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.1"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.4 19 2c1 2 2 4.12 1 9a7 7 0 0 1-9 9z"/><path d="M11 20v-8.4"/></svg>');
+            /* New Leaf Branch Pattern - Dark Sylphiette Green */
+            --bg-pattern: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="%2322c55e" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.12"><path d="M12 22C12 22 11.5 14 16 8C19 4 21 3 21 3C21 3 20 6 16 9C13 11 12 15 12 22Z"/><path d="M12 18C9 16 6 16 4 18C6 15 8 13 12 14"/><path d="M13 13C10 10 7 10 4 11C7 9 9 7 13 9"/><path d="M15 8C13 5 11 5 8 6C11 4 13 3 15 5"/></svg>');
         }
 
         * {
@@ -813,7 +814,7 @@
             </div>
             <div class="code-wrapper">
                 <code>settin'.json</code>
-                <button class="copy-btn" onclick="copyCode(this)" data-en="Copy Name" data-vi="Sao chép tên">Copy Name</button>
+                <button class="copy-btn" onclick="copyFileRaw('settin\'.json', this)" data-en="Copy Raw" data-vi="Sao chép Raw">Copy Raw</button>
             </div>
             <div class="note-bar">
                 <span class="note-text" data-en="Custom Scratch Addons configuration file. Download or view raw to copy contents." data-vi="File cấu hình Scratch Addons cá nhân. Tải về hoặc xem mã raw để copy trực tiếp.">Custom Scratch Addons configuration file. Download or view raw to copy contents.</span>
@@ -913,22 +914,18 @@
         filterCommands();
     }
 
-    function copyCode(btn) {
-        const codeText = btn.previousElementSibling.innerText;
-        
+    function writeToClipboard(text, btn, origEn, origVi) {
         if (navigator.clipboard && window.isSecureContext) {
-            navigator.clipboard.writeText(codeText);
+            navigator.clipboard.writeText(text);
         } else {
             const textArea = document.createElement("textarea");
-            textArea.value = codeText;
+            textArea.value = text;
             document.body.appendChild(textArea);
             textArea.select();
             document.execCommand('copy');
             document.body.removeChild(textArea);
         }
 
-        const origEn = btn.getAttribute('data-en') || "Copy";
-        const origVi = btn.getAttribute('data-vi') || "Sao chép";
         btn.innerText = currentLang === 'vi' ? "Đã chép!" : "Copied!";
         btn.style.backgroundColor = "#15803d";
         btn.style.color = "#ffffff";
@@ -940,6 +937,33 @@
         }, 1200);
     }
 
+    function copyCode(btn) {
+        const codeText = btn.previousElementSibling.innerText;
+        const origEn = btn.getAttribute('data-en') || "Copy";
+        const origVi = btn.getAttribute('data-vi') || "Sao chép";
+        writeToClipboard(codeText, btn, origEn, origVi);
+    }
+
+    async function copyFileRaw(filePath, btn) {
+        const origEn = btn.getAttribute('data-en') || "Copy Raw";
+        const origVi = btn.getAttribute('data-vi') || "Sao chép Raw";
+        try {
+            const response = await fetch(filePath);
+            if (!response.ok) throw new Error("File not found");
+            const fileContent = await response.text();
+            writeToClipboard(fileContent, btn, origEn, origVi);
+        } catch (err) {
+            btn.innerText = currentLang === 'vi' ? "Lỗi tải!" : "Error!";
+            btn.style.backgroundColor = "#b91c1c";
+            btn.style.color = "#ffffff";
+            setTimeout(() => {
+                btn.innerText = currentLang === 'vi' ? origVi : origEn;
+                btn.style.backgroundColor = "";
+                btn.style.color = "";
+            }, 1500);
+        }
+    }
+
     function filterCommands() {
         const query = document.getElementById('searchInput').value.toLowerCase().trim();
         const activeSection = document.querySelector('.section.active');
@@ -949,18 +973,15 @@
         cards.forEach(card => {
             const isFunCard = card.classList.contains('fun-card');
 
-            // Khi bật Fun Mode: Ẩn các lệnh thường, chỉ hiện các lệnh Fun
             if (funModeActive && !isFunCard) {
                 card.style.display = 'none';
                 return;
             }
-            // Khi tắt Fun Mode: Ẩn các lệnh Fun, chỉ hiện các lệnh thường
             if (!funModeActive && isFunCard) {
                 card.style.display = 'none';
                 return;
             }
 
-            // Kiểm tra theo từ khóa tìm kiếm
             if (!query || card.innerText.toLowerCase().includes(query)) {
                 card.style.display = 'block';
                 visibleCount++;
