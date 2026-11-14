@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sylphiette's cmds pack</title>
+    <title>Sylphiette Packs</title>
     <style>
         :root {
             --bg-color: #f8fafc; 
@@ -84,30 +84,27 @@
         }
 
         .theme-toggle-btn {
-            background-color: var(--control-bg);
+            background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             color: var(--text-main);
             padding: 8px 14px;
-            border-radius: 8px;
+            border-radius: 10px;
             font-weight: 600;
             cursor: pointer;
             font-size: 13.5px;
             display: flex;
             align-items: center;
             gap: 6px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
         }
         .theme-toggle-btn:hover {
             border-color: var(--accent);
         }
 
         .user-info {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
             display: flex;
             align-items: center;
             gap: 12px;
-            pointer-events: none;
         }
 
         .avatar {
@@ -455,10 +452,17 @@
             color: var(--text-muted);
         }
 
-        .lang-selector-box {
+        .bottom-controls {
             position: fixed;
             bottom: 20px;
             left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 100;
+        }
+
+        .lang-selector-box {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 10px;
@@ -467,7 +471,6 @@
             gap: 8px;
             align-items: center;
             box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-            z-index: 100;
             font-size: 13px;
             font-weight: 700;
             cursor: pointer;
@@ -476,6 +479,40 @@
 
         .lang-selector-box:hover {
             border-color: var(--accent);
+        }
+
+        @media (max-width: 600px) {
+            .header-box {
+                gap: 12px;
+                flex-wrap: wrap;
+            }
+
+            .header-left {
+                width: 100%;
+            }
+
+            .nav-buttons {
+                width: 100%;
+                justify-content: flex-end;
+            }
+
+            .username {
+                font-size: 16px;
+            }
+
+            .bottom-controls {
+                left: 10px;
+                bottom: 10px;
+                gap: 6px;
+            }
+
+            .theme-toggle-btn {
+                padding: 8px 10px;
+            }
+
+            .lang-selector-box {
+                padding: 8px;
+            }
         }
 
         .lang-btn {
@@ -508,13 +545,10 @@
     <!-- Top Header Bar -->
     <div class="header-box">
         <div class="header-left">
-            <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn">
-                <span id="themeIcon">🌙</span> <span id="themeLabel">Dark Mode</span>
-            </button>
-        </div>
-        <div class="user-info">
-            <img src="sylphie.png" alt="Sylphiette" class="avatar" onerror="this.src='https://placehold.co/100/15803d/ffffff?text=Sylph'">
-            <span class="username">Sylphiette's cmds pack</span>
+            <div class="user-info">
+                <img src="sylphie.png" alt="Sylphiette" class="avatar" onerror="this.src='https://placehold.co/100/15803d/ffffff?text=Sylph'">
+                <span class="username">Sylphiette Packs</span>
+            </div>
         </div>
         <div class="nav-buttons">
             <button class="nav-btn active" id="btn-ps" onclick="switchTab('ps', this)">PS</button>
@@ -810,6 +844,18 @@
     <div id="others" class="section">
         <div class="card useful-card">
             <div class="card-header-line">
+                <span class="card-title" data-en="Vietnamese Latin Character Set" data-vi="Dãy Chữ Latinh Việt">Vietnamese Latin Character Set</span>
+            </div>
+            <div class="code-wrapper">
+                <code>aàáảãạăằắẳẵặâầấẩẫậbcdđeèéẻẽẹêềếểễệfghìíỉĩịjklmnoòóỏõọôồốổỗộơờớởỡợpqrstuùúủũụưừứửữựvwxyỳýỷỹỵzAÀÁẢÃẠĂẰẮẲẴẶÂẦẤẨẪẬBCDĐEÈÉẺẼẸÊỀẾỂỄỆFGHIÌÍỈĨỊJKLMNOPQRSTUVWXYZ0123456789.,!?:;'\"()[]{}-_+=*/\\@#$%^&~`<></code>
+                <button class="copy-btn" onclick="copyCode(this)" data-en="Copy" data-vi="Sao chép">Copy</button>
+            </div>
+            <div class="note-bar">
+                <span class="note-text" data-en="Vietnamese Latin letters, including accented characters, uppercase letters, numbers and punctuation." data-vi="Bảng chữ Latinh tiếng Việt gồm chữ có dấu, chữ hoa, chữ số và dấu câu.">Vietnamese Latin letters, including accented characters, uppercase letters, numbers and punctuation.</span>
+            </div>
+        </div>
+        <div class="card useful-card">
+            <div class="card-header-line">
                 <span class="card-title" data-en="Scratch Addon Settings Configuration" data-vi="Cấu Hình Scratch Addon Settings">Scratch Addon Settings Configuration</span>
             </div>
             <div class="code-wrapper">
@@ -886,10 +932,15 @@
 </div>
 
 <!-- Fixed Language Switcher Container -->
-<div class="lang-selector-box" id="langBox" onclick="toggleLanguageBox()" title="Click anywhere to toggle language">
-    🌐
-    <button class="lang-btn active" id="langEnBtn">EN</button>
-    <button class="lang-btn" id="langViBtn">VI</button>
+<div class="bottom-controls">
+    <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn">
+        <span id="themeIcon">🌙</span> <span id="themeLabel">Dark Mode</span>
+    </button>
+    <div class="lang-selector-box" id="langBox" onclick="toggleLanguageBox()" title="Click anywhere to toggle language">
+        🌐
+        <button class="lang-btn active" id="langEnBtn">EN</button>
+        <button class="lang-btn" id="langViBtn">VI</button>
+    </div>
 </div>
 
 <script>
