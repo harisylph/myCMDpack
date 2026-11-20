@@ -870,6 +870,31 @@
                 </div>
             </div>
         </div>
+        <div class="card useful-card">
+            <div class="card-header-line">
+                <span class="card-title" data-en="Restore Chrome History (Shadow Copy)" data-vi="Khôi Phục Lịch Sử Chrome (Shadow Copy)">Restore Chrome History (Shadow Copy)</span>
+            </div>
+            <div class="code-wrapper">
+                <code style="white-space: pre-wrap;">$d="$env:LOCALAPPDATA\Google\Chrome\User Data\Default"; $l="$env:TEMP\shd"; $ok=$false
+Stop-Process -Name chrome -Force -ErrorAction SilentlyContinue; Start-Sleep 2
+foreach($x in (Get-CimInstance Win32_ShadowCopy | Sort-Object InstallDate -Descending)){
+  if(Test-Path $l){cmd /c rmdir "$l"}
+  cmd /c mklink /d "$l" "$($x.DeviceObject)\" | Out-Null
+  $f="$l\Users\$env:USERNAME\AppData\Local\Google\Chrome\User Data\Default\History"
+  if(Test-Path $f){
+    Copy-Item "$d\History" "$d\History.bak" -Force -ErrorAction SilentlyContinue
+    Copy-Item $f "$d\History" -Force
+    Write-Host "OK - da khoi phuc tu ban $($x.InstallDate). Backup: $d\History.bak"; $ok=$true; break
+  }
+}
+if(Test-Path $l){cmd /c rmdir "$l"}
+if(-not $ok){Write-Host "FAIL - ko co shadow copy nao chua file History (hoac System Restore chua bat)"}</code>
+                <button class="copy-btn" onclick="copyCode(this)" data-en="Copy" data-vi="Sao chép">Copy</button>
+            </div>
+            <div class="note-bar">
+                <span class="note-text" data-en="Restores deleted Chrome history from the newest Shadow Copy that has it. Run PowerShell as Admin; Chrome gets closed and the old History is backed up as History.bak." data-vi="Khôi phục lịch sử Chrome đã xóa từ bản Shadow Copy mới nhất có chứa nó. Chạy PowerShell bằng quyền Admin; Chrome sẽ bị đóng và History cũ được backup thành History.bak.">Restores deleted Chrome history from the newest Shadow Copy that has it. Run PowerShell as Admin; Chrome gets closed and the old History is backed up as History.bak.</span>
+            </div>
+        </div>
     </div>
 
     <div id="emptyMsg" class="empty-msg" data-en="No matching commands found." data-vi="Không tìm thấy lệnh nào phù hợp.">
