@@ -2,6 +2,5 @@ services:
   - type: web
     name: my-site
     runtime: static
-    plan: free
     buildCommand: echo "no build"
     staticPublishPath: .
